@@ -9,7 +9,6 @@ export default function(containerRef) {
         path: 'root',
         screens: {
           Home: 'home',
-          Starship: 'starship',
           Settings: 'settings',
         },
       },

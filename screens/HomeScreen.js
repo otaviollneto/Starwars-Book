@@ -1,60 +1,46 @@
 import React, {useEffect, useState} from 'react';
-import { Image, Modal, StyleSheet, Text, TouchableOpacity, View, FlatList, ActivityIndicator } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
-import * as WebBrowser from 'expo-web-browser';
+import { Image, View, FlatList } from 'react-native';
 
-import { Service } from '../components/Services';
+import { Service, ServiceModal } from '../components/Services';
 
+import { _renderFooter, _renderBtn, _renderModal, _renderSpecies, _renderPlanet} from '../components/ScrollRender';
 import { styles } from '../components/Style';
 
-export default function HomeScreen(props) {
+export default function HomeScreen() {
   
   const [people, setPeople] = useState([])
+  const [specie, setSpecie] = useState([])
+  const [planet, setPlanet] = useState([])
   const [nextPage, setNextPage] = useState(1)
   const [peopleFiltered, setPeopleFiltered] = useState([])
+  const [modalVisible, setModalVisible] = useState(false)
 
   useEffect(() => {
-      getPeoples()
+      getPeoples('people')
   },[])
 
-  async function getPeoples() {
-    const response = await Service(type='people',nextPage)
-    console.log(response.status,nextPage)
+  async function getPeoples(type) {
+    const response = await Service(type,nextPage)
     if(response.status === 200) {
       const result = await response.json() 
       setPeople([...people,...result.results])
       setPeopleFiltered([...peopleFiltered,...result.results])
-      //console.log(nextPage)
       if(result.next != null)
         setNextPage(nextPage+1)
     }
   }
 
-  searchFilterFunction = (text) => {    
-    const newData = peopleFiltered.filter(item => {      
-        const itemData = `${item.name}`;
-        return itemData.indexOf(text) > -1;    
-    })   
-    setPeopleFiltered(newData)
+  async function getModal(type, url) {
+    console.log(url)
+    const response = await ServiceModal(url)
+    if(response.status === 200) {
+      const result = await response.json() 
+      (type === 'specie')?
+      setSpecie(result):
+      setPlanet(result)
+      setModalVisible(!modalVisible);
+    }
   }
-
-  _renderBtn = (nome, nasc, gender, onpress) =>
-        <TouchableOpacity style={[{ marginBottom: 20 }]} onPress={() => onpress()} rejectResponderTermination>
-            <View style={{ flex: 1 }}>
-                    <Text style={[{ color: '#FFC208', fontSize:22, marginTop:5 }]}><Text style={[{ color: '#FFF', fontSize:16 }]}>{nome}</Text></Text>
-                    <Text style={[{ color: '#FFC208', fontSize:16, marginTop:5 }]}>Data Nascimento: <Text style={[{ color: '#FFF', fontSize:16 }]}>{nasc}</Text></Text>
-                    <Text style={[{ color: '#FFC208', fontSize:16, marginTop:5 }]}>Gender: <Text style={[{ color: '#FFF', fontSize:16 }]}>{gender}</Text></Text>
-                    <Text style={[{ color: '#FFC208', fontSize:16, marginTop:5 }]}>Ver local de Nascimento</Text>
-            </View>
-        </TouchableOpacity>
-
-  _renderFooter = () => {
-      return (
-        <View style={{alignSelf: 'center', marginVertical: 20}}>
-          <ActivityIndicator />
-        </View>
-      );
-  };
 
   return (
     <View style={styles.container}>
@@ -72,14 +58,21 @@ export default function HomeScreen(props) {
           onEndReachedThreshold={0.1}
           ListFooterComponent={_renderFooter()}
           renderItem={({ item }) => {
-              return _renderBtn(
-                    item.name,
-                    item.birth_year,
-                    item.gender,
-                () => {}
-              )
+            return _renderBtn(
+                  item.birth_year,
+                  item.eye_color,
+                  item.gender,
+                  item.hair_color,
+                  item.height,
+                  item.mass,
+                  item.name,
+                  item.skin_color,
+              () => { getModal('specie',item.species[0]) },
+              () => { getModal('planets', item.homeworld) }
+            )
           }} 
       />
+      { _renderModal(modalVisible, specie, planet , () => { setModalVisible(!modalVisible) }) }
     </View>
   );
 }

@@ -2,7 +2,6 @@ import * as React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
-import StarshipScreen from '../screens/StarshipScreen';
 
 const BottomTab = createBottomTabNavigator();
 const INITIAL_ROUTE_NAME = 'Home';
@@ -20,14 +19,6 @@ export default function BottomTabNavigator({ navigation, route }) {
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-man" />,
         }}
       />
-      <BottomTab.Screen
-        name="Starship"
-        component={StarshipScreen}
-        options={{
-          title: 'Naves',
-          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-planet" />,
-        }}
-      />
     </BottomTab.Navigator>
   );
 }
@@ -38,7 +29,5 @@ function getHeaderTitle(route) {
   switch (routeName) {
     case 'Home':
       return 'Lista dos Personagens';
-    case 'Starship':
-      return 'Lista das Naves';
   }
 }
