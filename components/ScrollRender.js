@@ -19,8 +19,8 @@ export const _renderBtn = (
     mass,
     name,
     skin_color,
-    onpressSpecie, onpressHome) =>
-    <View style={{ flex: 1, marginBottom: 20 }}>
+    onpress) =>
+    <View style={styles.cardbox}>
         <Text style={styles.scrollTextTitleBig}>
             <Text style={styles.scrollText}>{name}</Text>
         </Text>
@@ -45,13 +45,9 @@ export const _renderBtn = (
         <Text style={styles.scrollTextTitle}>Cor de Cabelo:
             <Text style={styles.scrollText}> {hair_color}</Text>
         </Text>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-            <TouchableOpacity style={styles.scrollButton} onPress={() => onpressSpecie()} rejectResponderTermination>
-            <Text style={styles.scrollButtonText}>dados espécie</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity style={styles.scrollButton} onPress={() => onpressHome()} rejectResponderTermination>
-            <Text style={styles.scrollButtonText}>planeta origem</Text>
+        <View style={{ justifyContent:'center', alignItems:'center' }}>
+            <TouchableOpacity style={styles.scrollButton} onPress={() => onpress()} rejectResponderTermination>
+            <Text style={styles.scrollButtonText}>dados detalhado</Text>
             </TouchableOpacity>
         </View>
     </View>
@@ -66,9 +62,9 @@ export const _renderSpecies = (
     language,
     name,
     skin_colors) =>
-    <View style={{ flex: 1, marginBottom: 20 }}>
-        <Text style={styles.scrollTextTitleBig}>
-            <Text style={styles.scrollText}>{name}</Text>
+    <View style={styles.cardbox}>
+        <Text style={styles.scrollTextTitleBig}>Espécie:
+            <Text style={styles.scrollText}> {name}</Text>
         </Text>
         <Text style={styles.scrollTextTitle}>Língua: 
             <Text style={styles.scrollText}> {language}</Text>
@@ -106,9 +102,9 @@ export const _renderPlanet = (
     rotation_period,
     surface_water,
     terrain) =>
-    <View style={{ flex: 1, marginBottom: 20 }}>
-        <Text style={styles.scrollTextTitleBig}>
-            <Text style={styles.scrollText}>{name}</Text>
+    <View style={styles.cardbox}>
+        <Text style={styles.scrollTextTitleBig}>Planeta:
+            <Text style={styles.scrollText}> {name}</Text>
         </Text>
         <Text style={styles.scrollTextTitle}>Clima: 
             <Text style={styles.scrollText}> {climate}</Text>
@@ -136,15 +132,15 @@ export const _renderPlanet = (
         </Text>
     </View>
 
-export const _renderModal = (modalVisible, specie = null, planet = null,onpress) =>
+export const _renderModal = (modalVisible, name = null, specie = null, planet = null, onpress) =>
     <Modal
         animationType="slide"
         transparent={false}
         visible={modalVisible}
         onRequestClose={() => { Alert.alert('Modal has been closed.'); }}>
-        <View style={{ flex:1, marginTop: 22, backgroundColor: '#000', paddingTop:30, paddingStart:20, paddingEnd:10 }}>
-        <View>
-            {specie && _renderSpecies(
+        <View style={styles.modalbox}>
+            <Text style={styles.modaltitle}>{name}</Text>
+            {specie != null && _renderSpecies(
                 specie.average_height,
                 specie.average_lifespan,
                 specie.classification,
@@ -156,7 +152,7 @@ export const _renderModal = (modalVisible, specie = null, planet = null,onpress)
                 specie.skin_colors
             )}
 
-            {planet && _renderPlanet(
+            {planet != null && _renderPlanet(
                 planet.climate,
                 planet.diameter,
                 planet.gravity,
@@ -167,12 +163,12 @@ export const _renderModal = (modalVisible, specie = null, planet = null,onpress)
                 planet.surface_water,
                 planet.terrain
             )}
-
-            <TouchableOpacity style={styles.scrollButton} 
-                rejectResponderTermination 
-                onPress={() => onpress()} >
-                <Text style={styles.scrollButtonText}>Fechar</Text>
-            </TouchableOpacity>
-        </View>
+            <View style={{justifyContent:'center', alignItems:'center'}}>
+                <TouchableOpacity style={styles.scrollButton} 
+                    rejectResponderTermination 
+                    onPress={() => onpress()} >
+                    <Text style={styles.scrollButtonText}>Fechar</Text>
+                </TouchableOpacity>
+            </View>
         </View>
     </Modal>

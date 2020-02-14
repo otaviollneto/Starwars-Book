@@ -5,10 +5,12 @@ import { Service, ServiceModal } from '../components/Services';
 
 import { _renderFooter, _renderBtn, _renderModal, _renderSpecies, _renderPlanet} from '../components/ScrollRender';
 import { styles } from '../components/Style';
+import { setWorldAlignment } from 'expo/build/AR';
 
 export default function HomeScreen() {
   
   const [people, setPeople] = useState([])
+  const [name, setName] = useState(null)
   const [specie, setSpecie] = useState([])
   const [planet, setPlanet] = useState([])
   const [nextPage, setNextPage] = useState(1)
@@ -23,6 +25,7 @@ export default function HomeScreen() {
     const response = await Service(type,nextPage)
     if(response.status === 200) {
       const result = await response.json() 
+      console.log(result.results)
       setPeople([...people,...result.results])
       setPeopleFiltered([...peopleFiltered,...result.results])
       if(result.next != null)
@@ -30,14 +33,13 @@ export default function HomeScreen() {
     }
   }
 
-  async function getModal(type, url) {
-    console.log(url)
+  async function getModal(type, name, url) {
     const response = await ServiceModal(url)
     if(response.status === 200) {
       const result = await response.json() 
-      (type === 'specie')?
-      setSpecie(result):
-      setPlanet(result)
+      if(type == 'specie') setSpecie(result);
+      if(type == 'planet') setPlanet(result);
+      setName(name);
       setModalVisible(!modalVisible);
     }
   }
@@ -67,12 +69,11 @@ export default function HomeScreen() {
                   item.mass,
                   item.name,
                   item.skin_color,
-              () => { getModal('specie',item.species[0]) },
-              () => { getModal('planets', item.homeworld) }
+              () => { getModal('specie', item.name, item.species[0]); getModal('planet', item.name, item.homeworld) }
             )
           }} 
       />
-      { _renderModal(modalVisible, specie, planet , () => { setModalVisible(!modalVisible) }) }
+      { _renderModal(modalVisible, name, specie, planet, () => { setModalVisible(!modalVisible) }) }
     </View>
   );
 }

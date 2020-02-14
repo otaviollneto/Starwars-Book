@@ -13,7 +13,6 @@ export const Service = async (type, nextPage) => {
 }
 
 export const ServiceModal = async (url) => {
-    console.log(url)
     const data = {
         method: "GET",
         headers: {

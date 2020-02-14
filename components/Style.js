@@ -18,9 +18,16 @@ export const styles = StyleSheet.create({
       marginTop: 3,
       marginLeft: -10,
     },
+    cardbox: {
+        flex: 1, 
+        marginBottom: 20, 
+        backgroundColor: '#0e1717', 
+        borderRadius: 10, 
+        padding:10
+    },
     scrollTextTitleBig:{
         color:'#FFC208', 
-        fontSize:32, 
+        fontSize:18, 
         marginTop:5,
         fontWeight: 'bold'
     },
@@ -34,7 +41,6 @@ export const styles = StyleSheet.create({
         fontSize:16
     },
     scrollButton:{
-        flex:1,
         backgroundColor: '#FFC208',
         borderRadius: 10,
         width: 150,
@@ -42,10 +48,27 @@ export const styles = StyleSheet.create({
         margin: 5,
         marginTop: 10,
         color: '#333', 
-        alignItems: "center"
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     scrollButtonText:{
         color: '#333', 
         fontSize:16,
+    },
+    modalbox: {
+        flex:1, 
+        marginTop: 22, 
+        paddingBottom: 50,
+        backgroundColor: '#000', 
+        paddingTop:30, 
+        paddingStart:20, 
+        paddingEnd:10
+    },
+    modaltitle:{
+        fontSize: 32,
+        fontWeight: "bold",
+        color: 'white',
+        alignSelf:"center",
+        padding: 10
     }
 });
