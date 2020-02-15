@@ -26,6 +26,8 @@
     ],
     "ios": {
       "supportsTablet": true
-    }
+    },
+    "description": "APP de teste usando EXPO com consulta a API (swapi.co) para consulta de dados da franquia StarWars.",
+    "githubUrl": "https://github.com/otaviollneto/Starwars-Book"
   }
 }
